@@ -39,6 +39,7 @@ pipeline {
             withSonarQubeEnv('SonarQube') {
                 sh "${scannerHome}/bin/sonar-scanner"
              }
+ 	  }
        }
     }
     stage('Security') {
