@@ -1,8 +1,5 @@
 pipeline {
   agent any
-  tools {
-        sonarQube 'SonarQube Scanner'
-  }
   environment {
     PATH = "/Users/sashane/.docker/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
     APP_NAME = 'sit753-task-api'
@@ -37,8 +34,12 @@ pipeline {
     }
     stage('Code Quality') {
       steps {
-        withSonarQubeEnv('SonarQube') { sh 'sonar-scanner' }
-      }
+	script {
+            def scannerHome = tool 'SonarQube Scanner'
+            withSonarQubeEnv('SonarQube') {
+                sh "${scannerHome}/bin/sonar-scanner"
+             }
+       }
     }
     stage('Security') {
       steps {
