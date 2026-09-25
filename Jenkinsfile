@@ -42,16 +42,34 @@ pipeline {
  	  }
        }
     }
-    stage('Security') {
-      steps {
+stage('Security') {
+    steps {
         sh '''
-          . venv/bin/activate
-          bandit -r app.py -f json -o bandit-report.json || true
-          docker run --rm aquasec/trivy:latest image --severity HIGH,CRITICAL ${APP_NAME}:${BUILD_NUMBER}
+            . venv/bin/activate
+
+            echo "Running Bandit security scan..."
+            bandit -r app.py -f json -o bandit-report.json || true
+
+            echo "Running Trivy container image scan..."
+            gunzip -c ${APP_NAME}-${BUILD_NUMBER}.tar.gz > image.tar
+
+            docker run --rm \
+              -v "$PWD:/work" \
+              aquasec/trivy:latest \
+              image \
+              --input /work/image.tar \
+              --severity HIGH,CRITICAL \
+              --scanners vuln
+
+            rm -f image.tar
         '''
-      }
-      post { always { archiveArtifacts artifacts: 'bandit-report.json', allowEmptyArchive: true } }
     }
+    post {
+        always {
+            archiveArtifacts artifacts: 'bandit-report.json', allowEmptyArchive: true
+        }
+    }
+}
     stage('Deploy') {
       steps {
         sh '''
