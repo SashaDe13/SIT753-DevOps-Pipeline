@@ -1,0 +1,7 @@
+services:
+  task-api:
+    build: .
+    container_name: sit753-task-api
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
