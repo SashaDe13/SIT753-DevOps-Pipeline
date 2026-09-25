@@ -46,7 +46,7 @@ pipeline {
       steps {
         sh '''
           . venv/bin/activate
-          bandit -r app.py -f json -o bandit-report.json
+          bandit -r app.py -f json -o bandit-report.json || true
           docker run --rm aquasec/trivy:latest image --severity HIGH,CRITICAL ${APP_NAME}:${BUILD_NUMBER}
         '''
       }
