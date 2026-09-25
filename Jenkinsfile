@@ -27,7 +27,7 @@ pipeline {
       steps {
         sh '''
           . venv/bin/activate
-          YTHONPATH=. pytest -v --cov=app --cov-report=term --cov-report=xml
+          PYTHONPATH=. pytest -v --cov=app --cov-report=term --cov-report=xml
         '''
       }
       post { always { archiveArtifacts artifacts: 'coverage.xml', allowEmptyArchive: true } }
