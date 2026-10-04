@@ -23,13 +23,3 @@ Configure Git/Pipeline support, Docker access for the Jenkins agent, SonarQube +
 (the Jenkins SonarQube installation name used by the Jenkinsfile is `SonarQube`), and internet
 access for the Trivy image.
 
-Create a Pipeline from SCM and select this repository's Jenkinsfile.
-
-## Evidence to capture
-Use only evidence from your own run: full Jenkins stage view; build artefact/image; pytest and
-coverage; SonarQube result; Bandit/Trivy result; staging health response; versioned production
-release; and monitoring/dashboard/alert evidence.
-
-The included Monitoring stage provides a container health check baseline. For the strongest match
-to the assessment's top monitoring criterion, add a real monitoring/alerting platform and demonstrate
-a meaningful alert in the video.
